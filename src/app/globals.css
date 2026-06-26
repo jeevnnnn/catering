@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────────────────────── */
+:root {
+  --background: #FFFDF9;
+  --foreground: #444444;
+  --primary: #8B5E3C;
+  --secondary: #C9A66B;
+  --accent: #F7F1E8;
+  --dark: #1A1A1A;
+  --radius: 0.75rem;
+}
+
+@theme {
+  --color-primary: #8B5E3C;
+  --color-secondary: #C9A66B;
+  --color-accent: #F7F1E8;
+  --color-dark: #1A1A1A;
+  --color-bg-custom: #FFFDF9;
+  --color-text-custom: #444444;
+
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Animation tokens — zoom-in only scales, never opacity = FOIT-safe */
+  --animate-zoom-in: zoom-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.5s ease both;
+
+  @keyframes zoom-in {
+    from { transform: scale(1.08); }
+    to   { transform: scale(1); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+/* ─── Hero slide-up (CSS-only, FOIT-safe: no opacity involved) ───────────── */
+@keyframes hero-slide-up {
+  from { transform: translateY(20px); }
+  to   { transform: translateY(0px); }
+}
+
+/* ─── Reduced Motion: disable all non-essential animations ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Always visible — Framer Motion SSR cannot override this */
+  opacity: 1;
+  visibility: visible;
+  min-height: 100vh;
+}
+
+/* ─── Typography — always visible, never opacity: 0 ─────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+/* Heading size scale */
+h1 { font-size: clamp(2rem, 5vw, 4.5rem); }
+h2 { font-size: clamp(1.5rem, 3.5vw, 3rem); }
+h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
+
+p, li, label, td, th {
+  line-height: 1.65;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+/* ─── Focus styles — keyboard accessible ────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* ─── Glassmorphism ──────────────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(255, 253, 249, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 166, 107, 0.18);
+}
+
+.glass-panel-dark {
+  background: rgba(26, 26, 26, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 253, 249, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(201, 166, 107, 0.12);
+  /* Use specific properties instead of 'transition: all' to prevent CLS */
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.glass-card:hover {
+  background: rgba(255, 253, 249, 0.9);
+  border-color: rgba(201, 166, 107, 0.28);
+  transform: translate3d(0, -3px, 0);
+  box-shadow: 0 8px 24px rgba(139, 94, 60, 0.07);
+}
+
+/* GPU Acceleration for animated layers to bypass main-thread layout calculations */
+.gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ─── Custom scrollbar ───────────────────────────────────────────────────── */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #FFFDF9; }
+  ::-webkit-scrollbar-thumb { background: #C9A66B; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8B5E3C; }
+}
+
+/* ─── Luxury CTA button ──────────────────────────────────────────────────── */
+.btn-luxury {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.btn-luxury:hover {
+  transform: translateY(-1px);
+}
+
+.btn-luxury:active {
+  transform: translateY(0);
+}
+
+/* Shimmer effect on hover */
+.btn-luxury::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.btn-luxury:hover::after {
+  transform: translateX(100%);
+}
+
+/* ─── Masonry gallery grid ───────────────────────────────────────────────── */
+.masonry-grid {
+  columns: 1;
+  column-gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .masonry-grid { columns: 2; }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid { columns: 3; }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  display: block;
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Images ─────────────────────────────────────────────────────────────── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift on lazy-loaded images */
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* ─── Form inputs — consistent look ─────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="password"],
+select,
+textarea {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ─── Print ──────────────────────────────────────────────────────────────── */
+@media print {
+  .glass-panel, .glass-panel-dark, .glass-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: white;
+    border: 1px solid #ccc;
+  }
+}
