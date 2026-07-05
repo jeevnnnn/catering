@@ -60,15 +60,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     width: 800,
     height: 1100, // tall masonry
   },
-  {
-    id: "gal-6",
-    title: "Truffle Tortellini Michelin Showcase",
-    category: "culinary",
-    categoryName: "Culinary Art",
-    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=80",
-    width: 800,
-    height: 600,
-  },
+
   {
     id: "gal-7",
     title: "Crystal Candelabra Table Decor",
