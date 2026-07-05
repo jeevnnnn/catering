@@ -7,7 +7,8 @@ import {
   updateDoc, 
   doc, 
   query, 
-  orderBy 
+  orderBy,
+  Firestore
 } from "firebase/firestore";
 
 export interface Lead {
@@ -41,7 +42,7 @@ const hasFirebaseConfig =
   firebaseConfig.authDomain;
 
 let app;
-let firestoreDb: any = null;
+let firestoreDb: Firestore | null = null;
 
 if (hasFirebaseConfig) {
   try {

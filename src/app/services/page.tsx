@@ -23,7 +23,7 @@ interface ServiceItem {
   name: string;
   desc: string;
   inclusions: string[];
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
   category: "culinary" | "planning";
 }
 

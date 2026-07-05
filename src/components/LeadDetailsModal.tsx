@@ -7,7 +7,7 @@ import { X, Calendar, Users, DollarSign, MapPin, ClipboardList, Phone, Mail, Clo
 interface LeadDetailsModalProps {
   lead: Lead;
   onClose: () => void;
-  onStatusChange: () => void;
+  onStatusChange: (newStatus: Lead["status"]) => void;
 }
 
 export default function LeadDetailsModal({ lead, onClose, onStatusChange }: LeadDetailsModalProps) {
@@ -19,7 +19,7 @@ export default function LeadDetailsModal({ lead, onClose, onStatusChange }: Lead
     try {
       await updateLeadStatus(lead.id, newStatus);
       setStatus(newStatus);
-      onStatusChange();
+      onStatusChange(newStatus);
     } catch (err) {
       console.error("Failed to update status:", err);
     } finally {

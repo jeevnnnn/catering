@@ -161,10 +161,9 @@ export default function GallerySection({ limit }: GallerySectionProps) {
         <AnimatePresence mode="popLayout">
           {displayedItems.map((item, index) => (
             <m.div
-              layout
               key={item.id}
-              initial={{ scale: 0.97 }}
-              animate={{ scale: 1 }}
+              initial={{ scale: 0.97, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.97, opacity: 0 }}
               transition={{ duration: 0.3 }}
               className="masonry-item gpu-accelerated group relative overflow-hidden rounded-xl border border-[#C9A66B]/15 bg-[#FFFDF9] cursor-pointer"

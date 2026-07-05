@@ -19,22 +19,25 @@ export default function StatCard({ number, suffix, label, subLabel }: StatCardPr
   useEffect(() => {
     if (!isInView) return;
 
-    let start = 0;
+    let startTime: number | null = null;
     const duration = 1800;
     const end = number;
-    const increment = end / (duration / 16);
+    let animationFrameId: number;
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        clearInterval(timer);
-        setCount(end);
-      } else {
-        setCount(Math.floor(start));
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const current = Math.min(Math.floor((progress / duration) * end), end);
+
+      setCount(current);
+
+      if (progress < duration) {
+        animationFrameId = requestAnimationFrame(animate);
       }
-    }, 16);
+    };
 
-    return () => clearInterval(timer);
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isInView, number]);
 
   return (

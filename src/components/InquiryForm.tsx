@@ -68,6 +68,7 @@ export default function InquiryForm() {
   }, [paramEventType, paramGuestCount, paramBudget, reset]);
 
   const onSubmit = async (data: LeadFormValues) => {
+    if (isSubmitting) return;
     setIsSubmitting(true);
     try {
       await saveLead(data);
@@ -192,6 +193,7 @@ export default function InquiryForm() {
                 id="eventType"
                 {...register("eventType")}
                 aria-invalid={!!errors.eventType}
+                aria-describedby={errors.eventType ? "eventType-error" : undefined}
                 className="w-full bg-[#FFFDF9] border border-[#C9A66B]/25 rounded px-2.5 py-2 text-sm text-[#444444] focus:outline-none focus:ring-1 focus:ring-[#8B5E3C] cursor-pointer"
               >
                 <option value="">Choose...</option>
@@ -201,7 +203,7 @@ export default function InquiryForm() {
                   </option>
                 ))}
               </select>
-              {errors.eventType && <span role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.eventType.message}</span>}
+              {errors.eventType && <span id="eventType-error" role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.eventType.message}</span>}
             </div>
 
             <div>
@@ -212,9 +214,10 @@ export default function InquiryForm() {
                 {...register("eventDate")}
                 min={new Date().toISOString().split("T")[0]}
                 aria-invalid={!!errors.eventDate}
+                aria-describedby={errors.eventDate ? "eventDate-error" : undefined}
                 className="w-full bg-[#FFFDF9] border border-[#C9A66B]/25 rounded px-2 py-1.5 text-sm text-[#444444] focus:outline-none focus:ring-1 focus:ring-[#8B5E3C]"
               />
-              {errors.eventDate && <span role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.eventDate.message}</span>}
+              {errors.eventDate && <span id="eventDate-error" role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.eventDate.message}</span>}
             </div>
           </div>
 
@@ -225,9 +228,11 @@ export default function InquiryForm() {
                 id="guestCount"
                 type="number"
                 {...register("guestCount")}
+                aria-invalid={!!errors.guestCount}
+                aria-describedby={errors.guestCount ? "guestCount-error" : undefined}
                 className="w-full bg-[#FFFDF9] border border-[#C9A66B]/25 rounded px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none"
               />
-              {errors.guestCount && <span className="text-[10px] text-red-500 mt-1 block">{errors.guestCount.message}</span>}
+              {errors.guestCount && <span id="guestCount-error" role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.guestCount.message}</span>}
             </div>
 
             <div>
@@ -236,9 +241,11 @@ export default function InquiryForm() {
                 id="budget"
                 type="number"
                 {...register("budget")}
+                aria-invalid={!!errors.budget}
+                aria-describedby={errors.budget ? "budget-error" : undefined}
                 className="w-full bg-[#FFFDF9] border border-[#C9A66B]/25 rounded px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none"
               />
-              {errors.budget && <span className="text-[10px] text-red-500 mt-1 block">{errors.budget.message}</span>}
+              {errors.budget && <span id="budget-error" role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.budget.message}</span>}
             </div>
           </div>
 
@@ -249,9 +256,11 @@ export default function InquiryForm() {
               type="text"
               {...register("location")}
               placeholder="e.g. Blenheim Palace Garden, Oxford"
+              aria-invalid={!!errors.location}
+              aria-describedby={errors.location ? "location-error" : undefined}
               className="w-full bg-[#FFFDF9] border border-[#C9A66B]/25 rounded px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:ring-1 focus:ring-[#8B5E3C]"
             />
-            {errors.location && <span className="text-[10px] text-red-500 mt-1 block">{errors.location.message}</span>}
+            {errors.location && <span id="location-error" role="alert" className="text-[10px] text-red-600 mt-1 block">{errors.location.message}</span>}
           </div>
         </div>
 

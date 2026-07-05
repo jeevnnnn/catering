@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { EVENT_TYPES, calculateEventBudget, generateWhatsAppMessage } from "@/lib/calculator-logic";
 import { Calculator, ArrowRight, MessageCircle, HelpCircle, CheckCircle } from "lucide-react";
 import Link from "next/link";
@@ -8,11 +8,8 @@ import Link from "next/link";
 export default function BudgetCalculator() {
   const [eventType, setEventType] = useState(EVENT_TYPES[0].id);
   const [guestCount, setGuestCount] = useState(50);
-  const [results, setResults] = useState(calculateEventBudget(EVENT_TYPES[0].id, 50));
 
-  useEffect(() => {
-    setResults(calculateEventBudget(eventType, guestCount));
-  }, [eventType, guestCount]);
+  const results = calculateEventBudget(eventType, guestCount);
 
   const selectedEvent = EVENT_TYPES.find(e => e.id === eventType) || EVENT_TYPES[0];
 

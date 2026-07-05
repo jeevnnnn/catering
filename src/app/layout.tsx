@@ -1,26 +1,12 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import MotionProvider from "@/components/MotionProvider";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-  preload: true,
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-  preload: true,
-});
+// Load fonts dynamically from public URL inside the head to prevent build-time fetch errors when offline.
+// CSS variables are now directly defined in globals.css under the :root selector.
 
 const BASE_URL = "https://kaeonstudios.com";
 const OG_IMAGE = "https://images.unsplash.com/photo-1555244162-803834f70033?w=1200&auto=format&fit=crop&q=80";
@@ -139,13 +125,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <head>
         <meta name="theme-color" content="#8B5E3C" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
         <link rel="preconnect" href="https://images.unsplash.com" />
       </head>
       <body className="min-h-screen flex flex-col bg-[#FFFDF9] text-[#444444] antialiased">

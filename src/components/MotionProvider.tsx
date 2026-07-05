@@ -18,7 +18,7 @@ export default function MotionProvider({ children }: { children: React.ReactNode
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setIsReady(true);
+    requestAnimationFrame(() => setIsReady(true));
   }, []);
 
   return (

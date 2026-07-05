@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
-import { Sparkles, Calendar, Heart, Award, ArrowRight, Check } from "lucide-react";
+import { Calendar, Heart, Award, Check } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Luxury Wedding Catering",
@@ -95,7 +95,7 @@ export default function WeddingsPage() {
           <div className="w-16 h-0.5 bg-[#C9A66B]" />
           
           <p className="text-xs sm:text-sm text-[#444444] leading-relaxed font-light">
-            We understand that your wedding reception is more than just dinner — it's the first official meal you share with friends and family as partners. Our menu consultants study your favorite cuisines, heritage background, and favorite cocktails to synthesize a fully customized menu story.
+            We understand that your wedding reception is more than just dinner &mdash; it&apos;s the first official meal you share with friends and family as partners. Our menu consultants study your favorite cuisines, heritage background, and favorite cocktails to synthesize a fully customized menu story.
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">

@@ -9,6 +9,8 @@
   --accent: #F7F1E8;
   --dark: #1A1A1A;
   --radius: 0.75rem;
+  --font-playfair: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme {
@@ -62,6 +64,8 @@ html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  /* Prevent elastic scroll bounce jitter on overscroll */
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -75,6 +79,8 @@ body {
   opacity: 1;
   visibility: visible;
   min-height: 100vh;
+  /* Prevent overscroll bounce that causes shivering */
+  overscroll-behavior-y: none;
 }
 
 /* ─── Typography — always visible, never opacity: 0 ─────────────────────── */
@@ -157,6 +163,13 @@ textarea:focus-visible {
   perspective: 1000px;
 }
 
+/* Promote hero images running zoom-in animation to compositor layer */
+.animate-zoom-in {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
 /* ─── Custom scrollbar ───────────────────────────────────────────────────── */
 @supports selector(::-webkit-scrollbar) {
   ::-webkit-scrollbar { width: 6px; }
@@ -227,9 +240,22 @@ img {
   display: block;
 }
 
-/* Prevent layout shift on lazy-loaded images */
+/* Prevent layout shift on lazy-loaded images - content-visibility: auto is removed as it causes layout shivering when entering view */
 img[loading="lazy"] {
-  content-visibility: auto;
+  /* keep standard styling */
+}
+
+/* Optimized Transition for Fixed Header to avoid layout repaint jitter */
+.header-transition {
+  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease,
+              backdrop-filter 0.4s ease,
+              -webkit-backdrop-filter 0.4s ease;
+  will-change: padding, background-color, border-color, box-shadow, backdrop-filter;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* ─── Form inputs — consistent look ─────────────────────────────────────── */

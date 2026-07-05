@@ -1,27 +1,27 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { MessageSquare, Calendar, ChevronUp } from "lucide-react";
 import { m, AnimatePresence } from "framer-motion";
 
 export default function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false);
+  const isVisibleRef = useRef(false);
 
   useEffect(() => {
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsVisible(window.scrollY > 300);
-          ticking = false;
-        });
-        ticking = true;
+      const visible = window.scrollY > 300;
+      if (visible !== isVisibleRef.current) {
+        isVisibleRef.current = visible;
+        setIsVisible(visible);
       }
     };
 
     // Use passive listener for performance
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run initially in case page is refreshed already scrolled down
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

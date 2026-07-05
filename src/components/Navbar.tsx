@@ -1,37 +1,39 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { m, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Sparkles, Calendar, Coffee, Cake, UtensilsCrossed } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Coffee, Cake, UtensilsCrossed } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const pathname = usePathname();
+  const isScrolledRef = useRef(false);
 
   // Scroll listener to toggle background opacity/glass
   useEffect(() => {
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
-          ticking = false;
-        });
-        ticking = true;
+      const scrolled = window.scrollY > 20;
+      if (scrolled !== isScrolledRef.current) {
+        isScrolledRef.current = scrolled;
+        setIsScrolled(scrolled);
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run initially in case of refresh down page
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close menus on navigation
   useEffect(() => {
-    setIsOpen(false);
-    setActiveMega(null);
+    requestAnimationFrame(() => {
+      setIsOpen(false);
+      setActiveMega(null);
+    });
   }, [pathname]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -57,10 +59,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 header-transition border-b ${
           isScrolled 
-            ? "py-3 bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-md shadow-md border-b border-[#C9A66B]/15" 
-            : "py-6 bg-transparent"
+            ? "py-3 bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-md shadow-md border-[#C9A66B]/15" 
+            : "py-6 bg-transparent border-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">

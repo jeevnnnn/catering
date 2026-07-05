@@ -304,7 +304,7 @@ export default function Home() {
                     ))}
                   </div>
                   <p className="text-xs text-[#F7F1E8]/85 leading-relaxed font-light italic">
-                    "{t.text}"
+                    &ldquo;{t.text}&rdquo;
                   </p>
                 </div>
 
